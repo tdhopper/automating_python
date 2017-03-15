@@ -1,0 +1,19 @@
+---
+
+- name: Install supervisord
+  sudo: yes
+  apt:
+    name: supervisor
+    state: present
+    update_cache: yes
+  tags:
+    supervisor
+- name: Start supervisord
+  sudo: yes
+  service:
+    name: "supervisor"
+    state: running
+    enabled: yes
+  tags:
+    supervisor
+

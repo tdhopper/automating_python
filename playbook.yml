@@ -1,0 +1,55 @@
+---
+- hosts: digitalocean2
+  gather_facts: no
+  pre_tasks:
+    - raw: sudo apt-get -y install python
+
+- hosts: digitalocean2
+
+- hosts: digitalocean2
+  vars:
+    project_repo: git://github.com/tdhopper/long_running_python_process.git
+    project_location: /srv/long_running_python_process
+    conda_folder_name: miniconda
+    conda_root: /root
+    conda_env_name: process_env
+    supervisord_configs_path: /etc/supervisor/conf.d/
+  environment:
+    PATH: "{{ conda_root }}/{{ conda_folder_name }}/bin:{{ ansible_env.PATH }}"
+  roles:
+    - role: andrewrothstein.miniconda
+      miniconda_parent_dir: "{{ conda_root }}/{{ conda_folder_name }}"
+      tags:
+        miniconda
+    - role: supervisor
+  tasks:
+    - name: Clone project code.
+      git:
+        repo: "{{ project_repo }}"
+        dest: "{{ project_location }}"
+        update: yes
+      tags:
+        git
+    - name: Create Conda environment from project environment file.
+      command: conda env update
+      args:
+        chdir: "{{ project_location }}"
+      tags:
+        conda
+    - name: print env
+      command: "echo $PATH"
+      tags:
+        printenv
+    - name: Copy supervisord job file to remote
+      template:
+        src: ./templates/run_process.j2
+        dest: "{{ supervisord_configs_path }}/run_process.conf"
+        owner: root
+      tags:
+        conf
+    - name: Start job
+      supervisorctl:
+        name: long_running_python_process
+        state: present
+      tags:
+        conf
