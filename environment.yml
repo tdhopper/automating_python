@@ -1,0 +1,8 @@
+name: automating_python
+dependencies:
+- pip
+- python=3
+- jupyter
+- yaml
+- pip:
+    - bash_kernel
