@@ -1,0 +1,4 @@
+---
+- hosts: digitalocean
+  roles:
+    - role: supervisor

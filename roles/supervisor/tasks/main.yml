@@ -1,7 +1,7 @@
 ---
 
 - name: Install supervisord
-  sudo: yes
+  become: true
   apt:
     name: supervisor
     state: present
@@ -9,7 +9,7 @@
   tags:
     supervisor
 - name: Start supervisord
-  sudo: yes
+  become: true
   service:
     name: "supervisor"
     state: running

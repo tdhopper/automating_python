@@ -1,12 +1,12 @@
 ---
-- hosts: digitalocean2
+- hosts: digitalocean
   gather_facts: no
   pre_tasks:
     - raw: sudo apt-get -y install python
 
-- hosts: digitalocean2
+- hosts: digitalocean
 
-- hosts: digitalocean2
+- hosts: digitalocean
   vars:
     project_repo: git://github.com/tdhopper/long_running_python_process.git
     project_location: /srv/long_running_python_process
