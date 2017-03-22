@@ -1,7 +1,6 @@
-[program:long_running_python_process]
-environment=PATH={{ ansible_env.PATH }}
+[program:{{ program_name }}]
 command=sh run.sh
 autostart=true
 directory={{ project_location }}
-stderr_logfile=/var/log/long_running_python_process.err.log
-stdout_logfile=/var/log/long_running_python_process.out.log
+stderr_logfile=/var/log/{{ program_name }}.err.log
+stdout_logfile=/var/log/{{ program_name }}.out.log
